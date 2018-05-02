@@ -1,15 +1,15 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'telegram/bot/version'
+require 'potato/bot/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'telegram-bot'
-  spec.version       = Telegram::Bot::VERSION
+  spec.name          = 'potato-bot'
+  spec.version       = Potato::Bot::VERSION
   spec.authors       = ['Max Melentiev']
   spec.email         = ['melentievm@gmail.com']
 
-  spec.summary       = 'Library for building Telegram Bots with Rails integration'
-  spec.homepage      = 'https://github.com/telegram-bot-rb/telegram-bot'
+  spec.summary       = 'Library for building Potato Bots with Rails integration'
+  spec.homepage      = 'https://github.com/potato-bot-rb/potato-bot'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^spec/}) }
