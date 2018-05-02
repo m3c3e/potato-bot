@@ -9,7 +9,7 @@ namespace :potato do
         console = ActiveSupport::Logger.new(STDERR)
         Rails.logger.extend ActiveSupport::Logger.broadcast console
       end
-      Totato::Bot::UpdatesPoller.start(ENV['BOT'].try!(:to_sym) || :default)
+      Potato::Bot::UpdatesPoller.start(ENV['BOT'].try!(:to_sym) || :default)
     end
 
     desc 'Set webhook urls for all bots'
@@ -17,8 +17,8 @@ namespace :potato do
       routes = Rails.application.routes.url_helpers
       cert_file = ENV['CERT']
       cert = File.open(cert_file) if cert_file
-      Totato.bots.each do |key, bot|
-        route_name = Totato::Bot::RoutesHelper.route_name_for_bot(bot)
+      Potato.bots.each do |key, bot|
+        route_name = Potato::Bot::RoutesHelper.route_name_for_bot(bot)
         url = routes.send("#{route_name}_url")
         puts "Setting webhook for #{key}..."
         bot.async(false) { bot.set_webhook(url: url, certificate: cert) }
