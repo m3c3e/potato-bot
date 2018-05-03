@@ -8,6 +8,7 @@ getWebhookInfo
 
 getMe
 sendMessage
+sendTextMessage
 forwardMessage
 sendPhoto
 sendAudio

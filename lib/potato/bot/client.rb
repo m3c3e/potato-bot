@@ -60,7 +60,19 @@ module Potato
       end
 
       def request(action, body = {})
-        response = http_request("#{base_uri}#{action}", self.class.prepare_body(body))
+        header = { 'Content-Type': 'application/json; charset=utf-8' }
+        send_body = if action == 'sendTextMessage'
+          response = http_request(
+            "#{base_uri}#{action}", 
+            body.to_json,
+            { 'Content-Type': 'application/json; charset=utf-8' }
+            )
+        else
+          response = http_request(
+            "#{base_uri}#{action}", 
+            self.class.prepare_body(body)
+          )
+        end
         raise self.class.error_for_response(response) if response.status >= 300
         JSON.parse(response.body)
       end
@@ -68,8 +80,12 @@ module Potato
       # Endpoint for low-level request. For easy host highjacking & instrumentation.
       # Params are not used directly but kept for instrumentation purpose.
       # You probably don't want to use this method directly.
-      def http_request(uri, body)
-        client.post(uri, body)
+      def http_request(uri, body, header = nil)
+        if header.nil?
+          client.post(uri, body)
+        else
+          client.post(uri, body, header)
+        end
       end
 
       def inspect

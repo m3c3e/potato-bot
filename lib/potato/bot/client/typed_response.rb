@@ -13,7 +13,7 @@ module Potato
           sendAudio:            :Message,
           sendDocument:         :Message,
           sendLocation:         :Message,
-          sendMessage:          :Message,
+          sendTextMessage:          :Message,
           sendPhoto:            :Message,
           sendSticker:          :Message,
           sendVideo:            :Message,
