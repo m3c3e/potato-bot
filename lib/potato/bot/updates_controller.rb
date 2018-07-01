@@ -109,6 +109,8 @@ module Potato
         # Default implementation is to convert to downcase and add `on_` prefix
         # for conflicting commands.
         def action_for_command(cmd)
+          Rails.logger.info("---------")
+          Rails.logger.info(cmd)
           cmd.downcase!
           cmd.match(CONFLICT_CMD_REGEX) ? "on_#{cmd}" : cmd
         end
