@@ -63,13 +63,13 @@ module Potato
         header = { 'Content-Type': 'application/json; charset=utf-8' }
         send_body = if action == 'sendTextMessage'
           response = http_request(
-            "#{base_uri}#{action}", 
+            "#{base_uri}#{action}",
             body.to_json,
             { 'Content-Type': 'application/json; charset=utf-8' }
             )
         else
           response = http_request(
-            "#{base_uri}#{action}", 
+            "#{base_uri}#{action}",
             self.class.prepare_body(body)
           )
         end

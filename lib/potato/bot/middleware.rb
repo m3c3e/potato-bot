@@ -16,8 +16,16 @@ module Potato
 
       def call(env)
         request = ActionDispatch::Request.new(env)
-        update = request.request_parameters
-        controller.dispatch(bot, update)
+        #update = request.request_parameters
+        Rails.logger.info("------------call")
+        Rails.logger.info(request.raw_post)
+        Rails.logger.info("------")
+        response = JSON.parse(request.raw_post)
+        Rails.logger.info(response.inspect)
+        updates = response.is_a?(Array) ? response : response['result']
+        updates.each do |update|
+          controller.dispatch(bot, update)
+        end
         [200, {}, ['']]
       end
 

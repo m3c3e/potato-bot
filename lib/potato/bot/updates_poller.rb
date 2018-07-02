@@ -69,6 +69,8 @@ module Potato
 
       def fetch_updates(offset = self.offset)
         response = bot.async(false) { bot.get_updates(offset: offset, timeout: timeout) }
+        Rails.logger.info("---------fetch_updates")
+        Rails.logger.info(response.inspect)
         response.is_a?(Array) ? response : response['result']
       rescue Timeout::Error
         log { 'Fetch timeout' }
