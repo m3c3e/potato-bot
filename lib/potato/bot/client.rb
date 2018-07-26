@@ -60,12 +60,17 @@ module Potato
       end
 
       def request(action, body = {})
+        # Rails.logger.info("------------request")
+        # Rails.logger.info action
+        # Rails.logger.info "#{base_uri}#{action}"
+        # Rails.logger.info body.inspect
+        # Rails.logger.info self.class.prepare_body(body)
         header = { 'Content-Type': 'application/json; charset=utf-8' }
-        send_body = if action == 'sendTextMessage'
+        send_body = if %W(answerCallbackQuery sendTextMessage).include?(action)
           response = http_request(
             "#{base_uri}#{action}",
             body.to_json,
-            { 'Content-Type': 'application/json; charset=utf-8' }
+            header
             )
         else
           response = http_request(

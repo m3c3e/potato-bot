@@ -68,9 +68,11 @@ RSpec.shared_context 'potato/bot/callback_query', callback_query: true do
     description = "answer callback query with #{text.inspect}"
     text = a_string_matching(text) if text.is_a?(Regexp)
     options = options.merge(
-      callback_query_id: payload[:id],
+      inline_message_id: payload[:inline_message_id],
       text: text,
     )
+    # Rails.logger.info "-----------Integration.answer_callback_query"
+    # Rails.logger.info options.inspect
     Potato::Bot::RSpec::ClientMatchers::MakePotatoRequest.new(
       bot, :answerCallbackQuery, description: description
     ).with(hash_including(options))

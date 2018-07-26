@@ -33,9 +33,11 @@ module Potato
         # Same as reply_with, but for callback queries.
         def answer_callback_query(text, params = {})
           params = params.merge(
-            callback_query_id: payload['id'],
+            inline_message_id: payload['inline_message_id'],
             text: text,
           )
+          # Rails.logger.info "-----------ReplayHelpers.answer_callback_query"
+          # Rails.logger.info params.inspect
           bot.answer_callback_query(params)
         end
 
