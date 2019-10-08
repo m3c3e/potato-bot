@@ -1,18 +1,18 @@
-require 'json'
-require 'httpclient'
+require "json"
+require "httpclient"
 
 module Potato
   module Bot
     class Client
-      URL_TEMPLATE = 'https://api.potato.im:8443/%<token>s/'.freeze
+      URL_TEMPLATE = "https://api.potato.im:8443/%<token>s/".freeze
 
-      autoload :TypedResponse, 'potato/bot/client/typed_response'
+      autoload :TypedResponse, "potato/bot/client/typed_response"
       extend Initializers
       prepend Async
       prepend Botan::ClientHelpers
       include DebugClient
 
-      require 'potato/bot/client/api_helper'
+      require "potato/bot/client/api_helper"
       include ApiHelper
 
       class << self
@@ -40,7 +40,7 @@ module Potato
         def error_for_response(response)
           result = JSON.parse(response.body) rescue nil # rubocop:disable RescueModifier
           return Error.new(response.reason) unless result
-          message = result['description'] || '-'
+          message = result["description"] || "-"
           # This errors are raised only for valid responses from Potato
           case response.status
           when 403 then Forbidden.new(message)
@@ -65,19 +65,19 @@ module Potato
         # Rails.logger.info "#{base_uri}#{action}"
         # Rails.logger.info body.inspect
         # Rails.logger.info self.class.prepare_body(body)
-        header = { 'Content-Type': 'application/json; charset=utf-8' }
-        send_body = if %W(answerCallbackQuery sendTextMessage).include?(action)
-          response = http_request(
-            "#{base_uri}#{action}",
-            body.to_json,
-            header
-            )
-        else
-          response = http_request(
-            "#{base_uri}#{action}",
-            self.class.prepare_body(body)
-          )
-        end
+        header = { 'Content-Type': "application/json; charset=utf-8" }
+        send_body = if %W(answerCallbackQuery sendTextMessage getFile).include?(action)
+                      response = http_request(
+                        "#{base_uri}#{action}",
+                        body.to_json,
+                        header
+                      )
+                    else
+                      response = http_request(
+                        "#{base_uri}#{action}",
+                        self.class.prepare_body(body)
+                      )
+                    end
         raise self.class.error_for_response(response) if response.status >= 300
         JSON.parse(response.body)
       end
